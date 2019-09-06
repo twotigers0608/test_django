@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>j</title>
+<link href="../static/css/basic.css" rel="stylesheet" type="text/css">
+<link href="../static/css/style.css" rel="stylesheet" type="text/css">
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/index.js"></script>
+</head>
+<body>
+	<ul style="font:20 bo">
+		<li><A class="hover" href="#">前端交流</A></li>
+		<li><A href="#">交互设计</A></li>
+		<li><A href="#">视觉设计</A></li>
+		<li><A href="#">用户研究</A></li>
+		<li><A href="#">设计茶吧</A></li>
+		<li><A href="#">前端交流</A></li>
+		<li><A href="#"></A></li>
+
+		<div id="lanPos"></div>
+		<form id="uploadForm" enctype="multipart/form-data"> //文件上传的form
+            {% csrf_token %}
+            <input id="file" type="file" name="file" > //上传文件
+            <input type="radio" name="ostype" value="Windows" />Windows 
+            <input type="radio" name="ostype" value="Linux" />Linux
+            <input type="radio" name="ostype" value="Network" />Network
+            <input type="radio" name="ostype" value="DB" />DB
+            <button id="upload" type="button" style="margin:20px">上传</button>
+ 		</form>
+	</ul>
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+</div>
+</body>
+</html>
+

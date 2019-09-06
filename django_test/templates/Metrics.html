@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" xmlns:app="ignored" class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	</head>
+	<title>
+		Metrics
+	</title>
+	<meta name="description" content="Buildbot metrics dashboard">
+	<meta name="viewport" content="width=device-width">
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<link rel="stylesheet" href="styles.css">
+	<body ng-cloak="ng-cloak" ng-app="app" class="ng-cloak">
+		<gl-page-with-sidebar>
+			<gl-topbar>
+				<gl-topbar-contextual-actions>
+				</gl-topbar-contextual-actions>
+			</gl-topbar>
+			<div>
+				<warning>
+				</warning>
+				<loading>
+				</loading>
+				<ui-view>
+				</ui-view>
+				<doc>
+				</doc>
+			</div>
+		</gl-page-with-sidebar>
+	</body>
+	<script src="scripts.js?_1567147704095">
+	</script>
+	<script type="text/javascript">
+		angular.module("app").constant("config", {
+			"urls": {
+				"help_url": "http://wiki.ith.intel.com/display/CACTUS/CACTUS+Metrics",
+				"gerrit_url": "https://android.intel.com/",
+				"ft_pages_url": "http://cactus-metrics.tl.intel.com/ft_user/",
+				"bugzilla_bz_url": "http://shilc211.sh.intel.com:41006/show_bug.cgi?id=",
+				"jira_bug_url": "https://jira01.devtools.intel.com/browse/",
+				"MCG": {
+					"buildbot_url": "https://buildbot.sh.intel.com/absp/"
+				},
+				"AWR": {
+					"buildbot_url": "https://buildbot.sh.intel.com/absp/"
+				},
+				"CACTUS": {
+					"buildbot_url": "https://metabuildbot.sh.intel.com/"
+				}
+			},
+			"menu_groups": {
+				"MCG": {
+					"caption": "1A Metrics",
+					"separator": true,
+					"order": 0
+				},
+				"MCGGlobal": {
+					"caption": "Patches Stats",
+					"icon": "line-chart",
+					"order": 1
+				},
+				"MCGBuilders": {
+					"caption": "CI Builders",
+					"icon": "cogs",
+					"order": 2
+				},
+				"MCGft": {
+					"caption": "Domain Dashboards",
+					"icon": "users",
+					"order": 3
+				},
+				"MCGSiops": {
+					"caption": "SiOps Dashboards",
+					"icon": "users",
+					"order": 4
+				},
+				"MCGMC": {
+					"caption": "Monitoring & Control",
+					"icon": "desktop",
+					"order": 5
+				},
+				"MCGPTE": {
+					"caption": "Precommit Test Efficiency",
+					"icon": "line-chart",
+					"order": 6
+				},
+				"MCGTE": {
+					"caption": "Test Efficiency",
+					"icon": "line-chart",
+					"order": 7
+				},
+				"MCGOthers": {
+					"caption": "Other Dashboards",
+					"icon": "list-alt",
+					"order": 8
+				},
+				"MCGLive": {
+					"caption": "Live Dashboards",
+					"icon": "heartbeat",
+					"order": 9
+				},
+				"PKT": {
+					"caption": "1A Traceability",
+					"separator": true,
+					"order": 20
+				},
+				"MCGTraceability": {
+					"caption": "1A Traceability",
+					"icon": "crosshairs",
+					"order": 21
+				},
+				"CTICDI": {
+					"caption": "CTI Metrics",
+					"separator": true,
+					"order": 30
+				},
+				"CTICDISessions": {
+					"caption": "Sessions",
+					"icon": "heartbeat",
+					"order": 31
+				},
+				"CTICDIDevicePool": {
+					"caption": "Device Pool",
+					"icon": "vimeo",
+					"order": 32
+				},
+				"CTICDIDeviceDMS": {
+					"caption": "Device&DMS Monitor",
+					"icon": "users",
+					"order": 33
+				},
+				"CTICDIDashboard": {
+					"caption": "CTI Dashboards",
+					"icon": "users",
+					"order": 34
+				},
+				"CTICDICampagins": {
+					"caption": "Live Dashboards",
+					"icon": "list-alt",
+					"order": 35
+				},
+				"CTICDICDIProjects": {
+					"caption": "Live Dashboards",
+					"icon": "table",
+					"order": 36
+				},
+				"CTICDITestRequest": {
+					"caption": "Live Dashboards",
+					"icon": "line-chart",
+					"order": 37
+				},
+				"Security": {
+					"caption": "Security Metrics",
+					"separator": true,
+					"order": 50
+				},
+				"MCGMetrics": {
+					"caption": "Security Dashboards",
+					"icon": "line-chart",
+					"order": 51
+				}
+			},
+			"graphs": {
+				"patch_lifecycle": {
+					"api_url": "{dbName}/patch_life_cycle/jsv",
+					"route": "/{dbName}/patch_lifecycle",
+					"controller": "patch_lifecycle",
+					"caption": "Patch Life Cycle Dashboard",
+					"group": "{dbName}Global",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/patchlifecycle.html"
+				},
+				"patch_merged_summary": {
+					"api_url": "{dbName}/patch_merged_summary/jsv",
+					"route": "/{dbName}/patch_merged_summary",
+					"controller": "patch_merged_summary",
+					"caption": "Patch Quality",
+					"group": "{dbName}Global",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/patch_quality.html"
+				},
+				"patch_open_summary": {
+					"api_url": "{dbName}/patch_open_summary/jsv",
+					"route": "/{dbName}/patch_open_summary",
+					"controller": "patch_open_summary",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/patch_quality.html"
+				},
+				"patch_Detail": {
+					"api_url": "{dbName}/patch_Detail/jsv",
+					"route": "/{dbName}/patch_Detail?patchID",
+					"controller": "patch_Detail",
+					"dbs": ["MCG"]
+				},
+				"patch_failure_trend": {
+					"api_url": "{dbName}/patch_failure_trend/jsv",
+					"route": "/{dbName}/patch_failure_trend",
+					"controller": "patch_failure_trend",
+					"caption": "Patch Failure Trend",
+					"group": "{dbName}Global",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/patch_failure_trend.html"
+				},
+				"kernel_General": {
+					"api_url": "{dbName}/kernel_General/jsv",
+					"route": "/{dbName}/kernel_General",
+					"controller": "kernel_General",
+					"caption": "Kernel Integration Summary",
+					"group": "{dbName}ft",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/kernel_summary.html"
+				},
+				"kernel_Detail": {
+					"api_url": "{dbName}/kernel_Detail/jsv",
+					"route": "/{dbName}/kernel_Detail?topic",
+					"controller": "kernel_Detail",
+					"caption": "Kernel Integration Detail",
+					"group": "{dbName}ft",
+					"dbs": ["MCG"]
+				},
+				"patches": {
+					"api_url": "{dbName}/patches/jsv",
+					"route": "/{dbName}/patches",
+					"controller": "patches",
+					"caption": "Number of Patches Integrated",
+					"group": "{dbName}Global",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/patches.html"
+				},
+				"globalMetabuilds": {
+					"api_url": "{dbName}/globalBuilds/jsv",
+					"route": "/{dbName}/allBuilders",
+					"controller": "globalMetabuilds",
+					"caption": "All Metabuilders",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"engineering": {
+					"api_url": "{dbName}/metabuilds/jsv?name=engineering",
+					"route": "/{dbName}/engineering",
+					"controller": "metabuilds",
+					"caption": "Engineering Builds",
+					"builder_name": "engineering",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"autobuild": {
+					"api_url": "{dbName}/metabuilds/jsv?name=autobuild",
+					"route": "/{dbName}/autobuild",
+					"controller": "metabuilds",
+					"caption": "Auto Builds",
+					"builder_name": "autobuild",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"preintegration": {
+					"api_url": "{dbName}/metabuilds/jsv?name=preintegration",
+					"route": "/{dbName}/preintegration",
+					"controller": "metabuilds",
+					"caption": "PreIntegration Builds",
+					"builder_name": "preintegration",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"premerge": {
+					"api_url": "{dbName}/metabuilds/jsv?name=premerge",
+					"route": "/{dbName}/premerge",
+					"caption": "PreMerge",
+					"controller": "metabuilds",
+					"title": "PreMerge Builds",
+					"builder_name": "premerge",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"mergerequest": {
+					"api_url": "{dbName}/metabuilds/jsv?name=mergerequest",
+					"route": "/{dbName}/mergerequest",
+					"controller": "metabuilds",
+					"caption": "Merge Request Builds",
+					"builder_name": "mergerequest",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"mergerequestext": {
+					"restricted": true,
+					"api_url": "{dbName}/metabuilds/jsv?name=mergerequest",
+					"route": "/{dbName}/mergerequestExt",
+					"controller": "metabuildsMR",
+					"caption": "Merge Request Builds extended",
+					"builder_name": "mergerequest",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"latest": {
+					"api_url": "{dbName}/metabuilds/jsv?name=latest",
+					"route": "/{dbName}/latest",
+					"controller": "metabuilds",
+					"caption": "Latest Builds",
+					"builder_name": "latest",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"release_candidate": {
+					"api_url": "{dbName}/metabuilds/jsv?name=release_candidate",
+					"route": "/{dbName}/releasecandidate",
+					"controller": "metabuilds",
+					"caption": "Release Candidate Builds",
+					"builder_name": "Release Candidate",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"release": {
+					"api_url": "{dbName}/metabuilds/jsv?name=release",
+					"route": "/{dbName}/release",
+					"controller": "metabuilds",
+					"caption": "Release Builds",
+					"builder_name": "Release",
+					"docUrl": "app/doc/metabuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"microbuild": {
+					"api_url": "{dbName}/microbuilds/jsv",
+					"route": "/{dbName}/microbuilds",
+					"controller": "microbuilds",
+					"caption": "Micro Builds Dashboard",
+					"docUrl": "app/doc/microbuilds.html",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"testbuilder": {
+					"api_url": "{dbName}/testcampaign/jsv",
+					"route": "/{dbName}/testcampaign",
+					"controller": "microbuilds",
+					"caption": "Test Campaigns Dashboard",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"tm_sec": {
+					"api_url": "{dbName}/tm_sec/jsv",
+					"route": "/{dbName}/tm_sec",
+					"controller": "tm_sec",
+					"ft_name": "Security",
+					"title": "Tampere Security",
+					"caption": "Tampere Security",
+					"group": "{dbName}ft",
+					"dbs": ["MCG"]
+				},
+				"telephony_test_campaign_result": {
+					"api_url": "{dbName}/mc_campaigns/jsv?months=2&campaignsfilter=FT_tel|PACT_tel",
+					"route": "/{dbName}/TelephonyCampaignsResults",
+					"caption": "Telephony Campaigns Results",
+					"controller": "mc_campaigns",
+					"title": "Campaigns Results",
+					"group": "{dbName}ft",
+					"dbs": ["MCG"]
+				},
+				"telephony_test_case_result": {
+					"api_url": "{dbName}/ft_telephony_test_case/jsv",
+					"route": "/{dbName}/FTTelTCResult",
+					"caption": "Telephony Test Case Results",
+					"controller": "ft_tel_tc_result",
+					"title": "Test Case Results",
+					"group": "{dbName}ft",
+					"dbs": ["MCG"]
+				},
+				"builder_steps": {
+					"api_url": "{dbName}/builder_steps/jsv",
+					"route": "/{dbName}/builder_steps",
+					"controller": "builder_steps",
+					"caption": "Builder Steps",
+					"group": "{dbName}MC",
+					"dbs": ["MCG"]
+				},
+				"step_details": {
+					"api_url": "{dbName}/step_details/jsv",
+					"route": "/{dbName}/step_details?step",
+					"controller": "step_details",
+					"caption": "Step Details",
+					"group": "{dbName}MC",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/stepdetails.html"
+				},
+				"MonitoringCampaignsResults": {
+					"api_url": "{dbName}/mc_campaigns/jsv?months=2",
+					"route": "/{dbName}/CampaignsResults",
+					"caption": "Campaigns Results",
+					"controller": "mc_campaigns",
+					"title": "Campaigns Results",
+					"group": "{dbName}MC",
+					"dbs": ["MCG"]
+				},
+				"MonitoringCampaignsRootCauses": {
+					"api_url": "{dbName}/mc_tc_and_campaign/jsv?months=2",
+					"route": "/{dbName}/CampaignsRootCauses",
+					"caption": "Campaigns Root Causes",
+					"controller": "mc_tc_and_campaign",
+					"title": "Campaigns Root Causes",
+					"group": "{dbName}MC",
+					"dbs": ["MCG"]
+				},
+				"acsbuilderresults": {
+					"restricted": true,
+					"api_url": "{dbName}/buildersresult/jsv",
+					"route": "/{dbName}/buildersresult",
+					"controller": "acs_steps",
+					"caption": "ACS Builder stats",
+					"group": "{dbName}MC",
+					"dbs": ["MCG"]
+				},
+				"feature_teams": {
+					"api_url": "{dbName}/feature_teams/",
+					"route": "/{dbName}/feature_teams",
+					"controller": "rawTable",
+					"caption": "Components owners",
+					"desc": "Show all the COEs",
+					"group": "{dbName}Others",
+					"dbs": ["MCG"]
+				},
+				"git_project_category": {
+					"api_url": "{dbName}/project_category/jsv",
+					"route": "/{dbName}//project_category",
+					"controller": "gitProjectCategory",
+					"caption": "Git Project Category",
+					"desc": "Category of the git projects",
+					"group": "{dbName}Others",
+					"dbs": ["MCG"]
+				},
+				"db_status": {
+					"api_url": "{dbName}/db_status/",
+					"route": "/{dbName}/db_status",
+					"caption": "Metrics Database Status",
+					"controller": "rawTable",
+					"group": "{dbName}MC",
+					"dbs": ["MCG"]
+				},
+				"postcommit_status": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/post_commit.json",
+					"route": "/{dbName}/postcommit_reliability_cost",
+					"caption": "Post commit reliability cost",
+					"controller": "postcommit_reliability_cost",
+					"group": "{dbName}TE",
+					"title": "Post commit reliability cost",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/postcommit_reliability_cost.html"
+				},
+				"postcommit_measure": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/post_commit.json",
+					"route": "/{dbName}/postcommit_reliability_evaluation",
+					"caption": "Post commit reliability evaluation",
+					"controller": "postcommit_reliability_evaluation",
+					"group": "{dbName}TE",
+					"title": "Post commit reliability evaluation",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/postcommit_reliability_evaluation.html"
+				},
+				"cat0": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/post_commit.json",
+					"route": "/{dbName}/cat0_efficiency",
+					"caption": "Cat0 efficiency",
+					"controller": "cat0_efficiency",
+					"group": "{dbName}TE",
+					"title": "Cat0 efficiency",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/cat0_efficiency.html"
+				},
+				"postcommit_debug": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/post_commit.json",
+					"route": "/{dbName}/postcommit_mapping_debug",
+					"caption": "Post commit mapping debugging",
+					"controller": "postcommit_mapping_debug",
+					"group": "{dbName}TE",
+					"title": "Post commit mapping debug",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/postcommit_mapping_debug.html"
+				},
+				"postcommit_bugs_and_patches": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/post_commit.json",
+					"route": "/{dbName}/postcommit_bugs_and_patches",
+					"caption": "Post commit bug and patches",
+					"controller": "postcommit_bugs_and_patches",
+					"group": "{dbName}TE",
+					"title": "Post commit bugs and patches",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/postcommit_bugs_and_patches.html"
+				},
+				"postcommit_auto_manual_mapping": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/post_commit.json",
+					"route": "/{dbName}/auto_manual_mapping",
+					"caption": "Post commit test case mapping",
+					"controller": "auto_manual_mapping",
+					"group": "{dbName}TE",
+					"title": "Auto manual mapping",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/auto_manual_mapping.html"
+				},
+				"postcommit_campaigns_re_execution": {
+					"restricted": true,
+					"api_url": "{dbName}/postcommit_campaigns_re_execution/jsv",
+					"route": "/{dbName}/postcommit_campaigns_re_execution",
+					"caption": "Post commit campaigns re execution",
+					"controller": "postcommit_campaigns_re_execution",
+					"group": "{dbName}TE",
+					"title": "Post commit campaigns re execution",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/postcommit_campaigns_re_execution.html"
+				},
+				"postcommit_tc_re_execution_we_can_avoid": {
+					"restricted": true,
+					"api_url": "{dbName}/postcommit_campaigns_re_execution/jsv",
+					"route": "/{dbName}/postcommit_tc_re_execution_we_can_avoid",
+					"caption": "Post commit test case re-execution we can avoid",
+					"controller": "postcommit_tc_re_execution_we_can_avoid",
+					"group": "{dbName}TE",
+					"title": "Post commit campaigns re execution we can avoid",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/postcommit_tc_re_execution_we_can_avoid.html"
+				},
+				"crashes_per_testcase": {
+					"restricted": true,
+					"api_url": "http://cactus-metrics.tl.intel.com/awr_data.json",
+					"route": "/{dbName}/crashes_per_TC",
+					"caption": "Number of crashes per Test Case",
+					"controller": "crashes",
+					"group": "{dbName}TE",
+					"title": "Crashes per Test Case",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/crashes.html"
+				},
+				"preint_tests": {
+					"api_url": "{dbName}/preint_tests/jsv?builder=preintegration",
+					"route": "/{dbName}/preint_tests",
+					"controller": "preint_tests",
+					"caption": "Preintegration tests",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": false,
+						"per_slave": false,
+						"tc_details_status": false,
+						"verdicts": "BLOCKED,FAILED,PASSED"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/preint_tests.html"
+				},
+				"premerge_tests": {
+					"api_url": "{dbName}/preint_tests/jsv?builder=premerge",
+					"route": "/{dbName}/premerge_tests",
+					"controller": "preint_tests",
+					"caption": "Premerge tests",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": false,
+						"per_slave": false,
+						"tc_details_status": false
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/preint_tests.html"
+				},
+				"latest_tests": {
+					"api_url": "{dbName}/preint_tests/jsv?builder=latest",
+					"route": "/{dbName}/latest_tests",
+					"controller": "preint_tests",
+					"caption": "Latest tests",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": false,
+						"per_slave": false,
+						"tc_details_status": true,
+						"verdicts": "BLOCKED,FAILED,PASSED"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/latest_tests.html"
+				},
+				"all_tests": {
+					"api_url": "{dbName}/all_tests/jsv",
+					"route": "/{dbName}/all_tests",
+					"controller": "preint_tests",
+					"caption": "All tests",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": false,
+						"per_slave": false,
+						"tc_details_status": false
+					},
+					"dbs": ["MCG"]
+				},
+				"preint_test_details": {
+					"api_url": "{dbName}/preint_tests_details/jsv?builder=preintegration",
+					"route": "/{dbName}/preint_test_details",
+					"controller": "preint_tests",
+					"caption": "Preintegration tests (detailed)",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": true,
+						"per_slave": true,
+						"tc_details_status": true,
+						"verdicts": "BLOCKED,FAILED,PASSED"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/preint_detailed_tests.html"
+				},
+				"premerge_test_details": {
+					"api_url": "{dbName}/preint_tests_details/jsv?builder=premerge",
+					"route": "/{dbName}/premerge_test_details",
+					"controller": "preint_tests",
+					"caption": "Premerge tests (detailed)",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": true,
+						"per_slave": true,
+						"tc_details_status": true
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/preint_detailed_tests.html"
+				},
+				"latest_tests_details": {
+					"api_url": "{dbName}/preint_tests_details/jsv?builder=latest",
+					"route": "/{dbName}/latest_tests_details",
+					"controller": "preint_tests",
+					"caption": "Latest tests (detailed)",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"per_build": true,
+						"per_slave": true,
+						"tc_details_status": true,
+						"verdicts": "BLOCKED,FAILED,PASSED"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/latest_detailed_tests.html"
+				},
+				"regression_estimation_autobuild": {
+					"api_url": "{dbName}/data_to_count_regressions/jsv?builder=autobuild",
+					"route": "/{dbName}/autobuild_regs",
+					"controller": "preint_regs",
+					"caption": "Regressions (autobuild)",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"builder": "autobuild"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/regs.html"
+				},
+				"regression_estimation_preint": {
+					"api_url": "{dbName}/data_to_count_regressions/jsv?builder=preintegration",
+					"route": "/{dbName}/preint_regs",
+					"controller": "preint_regs",
+					"caption": "Regressions (preintegration)",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"builder": "preintegration"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/regs.html"
+				},
+				"regression_estimation_premerge": {
+					"api_url": "{dbName}/data_to_count_regressions/jsv?builder=premerge",
+					"route": "/{dbName}/premerge_regs",
+					"controller": "preint_regs",
+					"caption": "Regressions (premerge)",
+					"group": "{dbName}Siops",
+					"default": {
+						"builder": "premerge"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/regs.html"
+				},
+				"regression_estimation_mr": {
+					"api_url": "{dbName}/data_to_count_regressions/jsv?builder=mergerequest",
+					"route": "/{dbName}/mr_regs",
+					"controller": "preint_regs",
+					"caption": "Regressions (mergerequest)",
+					"group": "{dbName}Siops",
+					"default": {
+						"branch": "master",
+						"builder": "mergerequest"
+					},
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/regs.html"
+				},
+				"from_preint_to_premerge": {
+					"api_url": "{dbName}/from_preint_to_premerge/jsv",
+					"route": "/{dbName}/from_preint_to_premerge",
+					"controller": "from_preint_to_premerge",
+					"caption": "From preintegration to premerge",
+					"group": "{dbName}Siops",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/from_preint_to_premerge.html"
+				},
+				"anomalies_efficiency": {
+					"api_url": "{dbName}/anomalies_efficiency/jsv",
+					"route": "/{dbName}/anomalies_efficiency",
+					"controller": "anomalies_efficiency",
+					"caption": "Anomalies efficiency",
+					"group": "{dbName}PTE",
+					"dbs": ["MCG"]
+				},
+				"monitor_testslave_per_testcase": {
+					"api_url": "{dbName}/monitor_testslave_per_testcase/jsv",
+					"route": "/{dbName}/monitor_testslave_per_testcase",
+					"controller": "monitor_testslave_per_testcase",
+					"caption": "Test Campaign Slave Monitoring",
+					"group": "{dbName}Builders",
+					"dbs": ["MCG"]
+				},
+				"domainowner": {
+					"api_url": "{dbName}/livedashboard/jsv",
+					"emails_api_url": "{dbName}/livedashboardemails/jsv",
+					"route": "/{dbName}/domainowner",
+					"controller": "domainowner",
+					"caption": "Domain Owner Dashboard",
+					"group": "{dbName}Live",
+					"dbs": ["MCG"]
+				},
+				"dynamic_tc_warning_monitor": {
+					"api_url": "{dbName}/builders_builds_dynamic_tc_warning?weeks=5",
+					"route": "/{dbName}/dynamic_tc_warning_monitor",
+					"caption": "TC Anomalies Algo. ROI",
+					"controller": "dynamic_tc_warning_monitor",
+					"group": "{dbName}PTE",
+					"dbs": ["MCG"],
+					"docUrl": "app/doc/dynamic_tc_warning_monitor.html"
+				},
+				"security_metrics": {
+					"api_url": "security-metrics/json",
+					"route": "/{dbName}/security_metrics",
+					"controller": "security_metrics",
+					"caption": "Security Metrics",
+					"group": "{dbName}Metrics",
+					"dbs": ["MCG"]
+				},
+				"premerge_fast_revert": {
+					"api_url": "{dbName}/nb_changes_in_metabuilders/jsv?builder=premerge",
+					"route": "/{dbName}/premerge_fast_revert",
+					"controller": "fast_revert",
+					"caption": "Premerge fast revert",
+					"group": "{dbName}PTE",
+					"dbs": ["MCG"]
+				},
+				"preint_fast_revert": {
+					"api_url": "{dbName}/nb_changes_in_metabuilders/jsv?builder=preintegration",
+					"route": "/{dbName}/preintegration_fast_revert",
+					"controller": "fast_revert",
+					"caption": "Preintegration fast revert",
+					"group": "{dbName}PTE",
+					"dbs": ["MCG"]
+				},
+				"traceability": {
+					"api_url": "{dbName}/traceability/jsv",
+					"route": "/{dbName}/traceability",
+					"controller": "traceability",
+					"caption": "Traceability",
+					"group": "{dbName}Traceability",
+					"dbs": ["MCG"]
+				},
+				"cti_sessions": {
+					"api_url": "{dbName}/cti_sessions/jsv",
+					"route": "/{dbName}/cti_sessions",
+					"controller": "cti_sessions",
+					"caption": "Sessions Dashboard",
+					"group": "{dbName}Sessions",
+					"dbs": ["CTICDI"],
+					"docUrl": "app/doc/sessions.html"
+				},
+				"cti_sub_sessions": {
+					"api_url": "{dbName}/cti_sub_sessions/jsv",
+					"route": "/{dbName}/cti_sub_sessions",
+					"controller": "cti_sub_sessions",
+					"caption": "SubSessions Dashboard",
+					"group": "{dbName}Sessions",
+					"dbs": ["CTICDI"],
+					"docUrl": "app/doc/subsessions.html"
+				},
+				"history_sessions": {
+					"api_url": "{dbName}/history_sessions/jsv",
+					"route": "/{dbName}/history_sessions",
+					"controller": "history_sessions",
+					"caption": "History Sessions",
+					"group": "{dbName}Sessions",
+					"dbs": ["CTICDI"]
+				},
+				"device_pool_utilization_summary": {
+					"api_url": "{dbName}/device_pool_utilization_summary/jsv",
+					"route": "/{dbName}/device_pool_utilization_summary?months",
+					"controller": "device_pool_utilization_summary",
+					"caption": "Device Pool Utilization",
+					"group": "{dbName}DevicePool",
+					"dbs": ["CTICDI"],
+					"docUrl": "app/doc/device_pool_utilization_summary.html"
+				},
+				"device_pool_utilization_detail": {
+					"api_url": "{dbName}/device_pool_utilization_detail/jsv",
+					"route": "/{dbName}/device_pool_utilization_detail?deviceID",
+					"controller": "device_pool_utilization_detail",
+					"dbs": ["CTICDI"],
+					"docUrl": "app/doc/device_pool_utilization_detail.html"
+				},
+				"device_pool_status": {
+					"api_url": "{dbName}/device_pool_status/jsv",
+					"route": "/{dbName}/device_pool_status",
+					"controller": "device_pool_status",
+					"caption": "Device Pool Status",
+					"group": "{dbName}DevicePool",
+					"dbs": ["CTICDI"]
+				},
+				"inactive_device_monitor": {
+					"api_url": "{dbName}/inactive_device_monitor/jsv",
+					"route": "/{dbName}/inactive_device_monitor?months",
+					"controller": "inactive_device_monitor",
+					"caption": "Inactive Device Monitor",
+					"group": "{dbName}DeviceDMS",
+					"dbs": ["CTICDI"]
+				},
+				"inactive_dms_monitor": {
+					"api_url": "{dbName}/inactive_dms_monitor/jsv",
+					"route": "/{dbName}/inactive_dms_monitor?months",
+					"controller": "inactive_dms_monitor",
+					"caption": "Inactive DMS Monitor",
+					"group": "{dbName}DeviceDMS",
+					"dbs": ["CTICDI"]
+				},
+				"cti_campaigns": {
+					"api_url": "{dbName}/cti_campaigns/jsv",
+					"route": "/{dbName}/cti_campaigns",
+					"controller": "cti_campaigns",
+					"caption": "Campaign",
+					"group": "{dbName}Campagins",
+					"dbs": ["CTICDI"]
+				},
+				"cdi_project": {
+					"api_url": "{dbName}/cdi_project/jsv",
+					"route": "/{dbName}/cdi_project",
+					"controller": "cdi_project",
+					"caption": "CDI Projects",
+					"group": "{dbName}CDIProjects",
+					"dbs": ["CTICDI"]
+				},
+				"test_request_trend": {
+					"api_url": "{dbName}/test_request_trend/jsv",
+					"route": "/{dbName}/test_request_trend",
+					"controller": "test_request_trend",
+					"caption": "Test Request Trend",
+					"group": "{dbName}TestRequest",
+					"dbs": ["CTICDI"],
+					"docUrl": "app/doc/test_request_trend.html"
+				}
+			}
+		});
+	</script>
+
+</html>

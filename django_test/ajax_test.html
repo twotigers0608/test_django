@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AJAX Test</title>
+</head>
+<style>
+    table, th, td {
+        border : 1px solid black;
+        border-collapse: collapse;
+    }
+    th ,td{
+        padding: 5px;
+    }
+</style>
+
+<body>
+    <p id="demo">需要改变内容</p>
+
+    <button type="button" onclick="loadDoc()">change</button><br>
+    <button type="button" onclick="loadsing()">获取歌单</button>
+    <br><br>
+    <table id="demo1"></table>
+    
+</body>
+
+<script>
+    function loadDoc(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function(){
+            if (this.readyState == 4 && this.status == 200){
+                document.getElementById("demo").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/templates/index.html", true);
+        xhttp.send();
+    }
+
+    function loadsing(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200){
+                    myFunction(this);
+                }
+            };
+            xhttp.open("GET", "/templates/music_list.xml", true);
+            xhttp.send();
+        }
+    function myFunction(xml){
+        var i;
+        var xmlDoc = xml.responseXML;
+        var table = "<tr><th>艺术家</th><th>曲目</th></tr>";
+        var x = xmlDoc.getElementByTagName('TRACK')
+        for ( i = 0; i < x.length; i++){
+            table += "<tr><td>" + 
+            x[i].getElementByTagName("ARTIST")[0].childNodes[0].nodeValue +
+            "</td><td>" + 
+            x[i].getElementByTagName("TITLE")[0].childNodes[0].nodeValue + "</td></tr>";
+        }
+        document.getElementById("demo1").innerHTML = table;
+    }
+
+</script>
+</html>
