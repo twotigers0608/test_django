@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	</head>
 	<title>
-		Metrics
+		测试
 	</title>
 	<meta name="description" content="Buildbot metrics dashboard">
 	<meta name="viewport" content="width=device-width">
@@ -51,57 +51,57 @@
 			},
 			"menu_groups": {
 				"MCG": {
-					"caption": "1A Metrics",
+					"caption": "TEST_1",
 					"separator": true,
 					"order": 0
 				},
 				"MCGGlobal": {
-					"caption": "Patches Stats",
+					"caption": "Test 2",
 					"icon": "line-chart",
 					"order": 1
 				},
 				"MCGBuilders": {
-					"caption": "CI Builders",
+					"caption": "Test 3",
 					"icon": "cogs",
 					"order": 2
 				},
 				"MCGft": {
-					"caption": "Domain Dashboards",
+					"caption": "Test 4",
 					"icon": "users",
 					"order": 3
 				},
 				"MCGSiops": {
-					"caption": "SiOps Dashboards",
+					"caption": "Test 5",
 					"icon": "users",
 					"order": 4
 				},
 				"MCGMC": {
-					"caption": "Monitoring & Control",
+					"caption": "Test 6",
 					"icon": "desktop",
 					"order": 5
 				},
 				"MCGPTE": {
-					"caption": "Precommit Test Efficiency",
+					"caption": "Test 7",
 					"icon": "line-chart",
 					"order": 6
 				},
 				"MCGTE": {
-					"caption": "Test Efficiency",
+					"caption": "Test 8",
 					"icon": "line-chart",
 					"order": 7
 				},
 				"MCGOthers": {
-					"caption": "Other Dashboards",
+					"caption": "Test 8",
 					"icon": "list-alt",
 					"order": 8
 				},
 				"MCGLive": {
-					"caption": "Live Dashboards",
+					"caption": "Test 9",
 					"icon": "heartbeat",
 					"order": 9
 				},
 				"PKT": {
-					"caption": "1A Traceability",
+					"caption": "TEST_2",
 					"separator": true,
 					"order": 20
 				},
@@ -164,12 +164,12 @@
 			"graphs": {
 				"patch_lifecycle": {
 					"api_url": "{dbName}/patch_life_cycle/jsv",
-					"route": "/{dbName}/patch_lifecycle",
+					"route": "/{dbName}/test_name",
 					"controller": "patch_lifecycle",
-					"caption": "Patch Life Cycle Dashboard",
+					"caption": "This id test name",
 					"group": "{dbName}Global",
 					"dbs": ["MCG"],
-					"docUrl": "app/doc/patchlifecycle.html"
+					"docUrl": "test1/index.html"
 				},
 				"patch_merged_summary": {
 					"api_url": "{dbName}/patch_merged_summary/jsv",
