@@ -1,6 +1,9 @@
 from django.views.generic.base import View
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 class Home(View):
+
     def get(self, request):
+
         pass
+        return render(request, template_name='test1/index.html')
