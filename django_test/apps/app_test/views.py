@@ -6,4 +6,4 @@ class Home(View):
     def get(self, request):
 
         pass
-        return render(request, template_name='test1/index.html')
+        return render(request, template_name='index.html')
